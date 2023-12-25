@@ -1,14 +1,19 @@
 {
-  "name": "blockchain_origin_tracking",
-  "version": "1.0.0",
-  "description": "This is Blockchain Origin Tracking project at TDTU",
-  "main": "index.js",
+  "name": "blockchain-origin-tracking",
+  "version": "0.0.0",
+  "description": "This is Blockchain Origin Tracking project from TDT University.",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/www"
   },
   "author": "Ly Tuan An",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "express-generator": "^4.16.1"
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "hbs": "~4.0.4",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1"
   }
 }
