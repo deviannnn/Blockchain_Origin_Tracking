@@ -1,0 +1,14 @@
+{
+  "name": "blockchain_origin_tracking",
+  "version": "1.0.0",
+  "description": "This is Blockchain Origin Tracking project at TDTU",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ly Tuan An",
+  "license": "ISC",
+  "dependencies": {
+    "express-generator": "^4.16.1"
+  }
+}
