@@ -1,26 +1,43 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const logger = require('morgan');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const database = require('./configs/database')
+const { hbsEngine } = require('./configs/handlebars')
+const indexRouter = require('./routes/index');
 
-var app = express();
+const app = express();
+
+// database setup
+switch (app.get('env')) {
+  case 'development':
+    mongoose.connect(database.development.connectionString).then(() => console.log('Connected Development DB!'));
+    break;
+  case 'production':
+    mongoose.connect(database.production.connectionString).then(() => console.log('Connected Production DB!'));
+    break;
+  default:
+    throw new Error('Unknown execution environment ' + app.get('env'));
+}
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+app.engine('handlebars', hbsEngine);
+app.set('view engine', 'handlebars');
 
+// common setup
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(session({ secret: process.env.SESSION_KEY, resave: false, saveUninitialized: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
