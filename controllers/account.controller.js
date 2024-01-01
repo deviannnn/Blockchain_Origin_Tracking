@@ -71,19 +71,27 @@ const get = async (req, res) => {
 };
 
 const getAssetsByAccount = async (req, res) => {
-    const account = await Account.findOne({ gmail: req.params.username });
-    let assets = [];
+    try {
+        const account = await Account.findOne({ gmail: req.params.username });
+        let assets = [];
+        const assetPromises = account.assets.map(async (assetID) => {
+            try {
+                const asset = await global.contract.evaluateTransaction('ReadAsset', assetID);
+                assets.push(JSON.parse(asset));
+            } catch (e) {
+                console.log(`Asset with ID ${assetID} does not exist.`);
+                account.assets = account.assets.filter((ID) => {
+                    return ID !== assetID;
+                })
+            }
+        });
+        await Promise.all(assetPromises);
+        account.save();
 
-    account.assets.forEach(async (assetID) => {
-        try {
-            const asset = await global.contract.evaluateTransaction('ReadAsset', assetID);
-            assets.push(asset)
-        } catch (e) {
-            console.log(`Asset with ID ${assetID} does not exist.`)
-        }
-    });
-    
-    return res.status(200).json({ success: true, msg: `Get all assets by account successfully.`, assets });
+        return res.status(200).json({ success: true, msg: `Get all assets by account successfully.`, assets });
+    } catch(e) {
+        return res.status(500).json({ success: false, msg: 'Internal Server Error.' });
+    }
 }
 
 module.exports = { register, login, logout, get, getAssetsByAccount };
