@@ -38,37 +38,43 @@ switch (app.get('env')) {
 }
 
 async function main() {
-  try {
-    const ccp = buildCCPOrg1();
-
-    const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
-
-    const wallet = await buildWallet(Wallets, walletPath);
-
-    await enrollAdmin(caClient, wallet, mspOrg1);
-    await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
-
-    const gateway = new Gateway();
-
-    await gateway.connect(ccp, {
-      wallet,
-      identity: org1UserId,
-      discovery: { enabled: true, asLocalhost: true }
-    });
-
-    const network = await gateway.getNetwork(channelName);
-
-    global.contract = network.getContract(chaincodeName);
-
-    await global.contract.submitTransaction('InitLedger');
-  } catch (error) {
-    console.log(`******** FAILED to run the application: ${error}`);
-    throw new Error();
-  }
+  return new Promise(async (resolve, reject) => {
+    try {
+      const ccp = buildCCPOrg1();
+  
+      const caClient = buildCAClient(FabricCAServices, ccp, 'ca.org1.example.com');
+  
+      const wallet = await buildWallet(Wallets, walletPath);
+  
+      await enrollAdmin(caClient, wallet, mspOrg1);
+      await registerAndEnrollUser(caClient, wallet, mspOrg1, org1UserId, 'org1.department1');
+  
+      const gateway = new Gateway();
+  
+      await gateway.connect(ccp, {
+        wallet,
+        identity: org1UserId,
+        discovery: { enabled: true, asLocalhost: true }
+      });
+  
+      const network = await gateway.getNetwork(channelName);
+  
+      global.contract = network.getContract(chaincodeName);
+  
+      await global.contract.submitTransaction('InitLedger');
+      resolve();
+    } catch (error) {
+      reject();
+      // console.log(`******** FAILED to run the application: ${error}`);
+      // throw new Error();
+    }
+  })
 }
 
 main().then(() => {
-  console.log(`Connected Fabric`);
+  console.log(`Connected Fabric SUCCESSFULLY`);
+}, () => {
+  console.log(`xxx_Connect Fabric FAILED_xxx`)
 });
 
 // view engine setup

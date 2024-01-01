@@ -3,31 +3,28 @@
 Need to get docker, wsl (windows), npm (10.2.3 recommended), node (20.10.0 recommended)
 
 ### HOW TO RUN?
-- Step 1: From project 'hyperledger-fabric', run bash file in terminal
+#### *Please stay in project folder (Blockchain_Origin_Tracking) in all steps !!!
+- Step 1: Run bash file to install Hyperledger Fabric (if installed, go straight to Step 2):
 ```
-./install-fabric.sh
+cd hyperledger-fabric;./install-fabric.sh
 ```
-- Step 2: Move to path fabric-samples/test-network
+- Step 2: Do not forget to start docker first, then stop running containers/images by:
 ```
-cd fabric-samples/test-network
+cd hyperledger-fabric/fabric-samples/test-network;./network.sh down
 ```
-- Step 3: Start docker, stop running containers/images to avoid conflicting by command
+- Step 4: Create channel with Certificate Authorities:
 ```
-./network.sh down
+cd hyperledger-fabric/fabric-samples/test-network;./network.sh up createChannel -c mychannel -ca
 ```
-- Step 4: Creat channel with Certificate Authorities
+- Step 5: Deploy the chaincode:
 ```
-./network.sh up createChannel -c mychannel -ca
+cd hyperledger-fabric/fabric-samples/test-network;./network.sh deployCC -ccn basic -ccp ../../../chaincode-custom/ -ccl javascript
 ```
-- Step 5: Deploy the chaincode
-```
-./network.sh deployCC -ccn basic -ccp ../../../chaincode-custom/ -ccl javascript
-```
-- Step 6: Back to project directory, install all packages in file package.json
+- Step 6: Back to project directory, install all packages in file package.json:
 ```
 npm install
 ```
-- Step 7: Start the web project
+- Step 7: Start the web project:
 ```
 npm start
 ```

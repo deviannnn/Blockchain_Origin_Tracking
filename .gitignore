@@ -1,7 +1,7 @@
 # Self-download
 hyperledger-fabric/fabric-samples/
 # Ignore wallet to avoid error
-# wallet/
+wallet/
 
 # Logs
 logs
