@@ -1,66 +1,88 @@
 const { v4: uuidv4 } = require('uuid');
+const Account = require('../models/account');
 
 const get = async (req, res) => {
-    const assetID = req.params.assetID;
-
-    const exist = await global.contract.evaluateTransaction('AssetExists', assetID);
-    if (exist.toString() === 'false') {
-        return res.json({ success: false, msg: 'asset do not exist' });
+    try {
+        const assetID = req.params.assetID;
+        
+        // removable
+        const exist = await global.contract.evaluateTransaction('AssetExists', assetID);
+        if (exist.toString() === 'false') {
+            return res.json({ success: false, msg: 'Asset does not exist.' });
+        }
+    
+        const result = await global.contract.evaluateTransaction('ReadAsset', assetID);
+        return res.json(JSON.parse(result));
+    } catch(e) {
+        return res.json({ success: false, msg: 'Cannot get asset.' });
     }
-
-    const result = await global.contract.evaluateTransaction('ReadAsset', assetID);
-    return res.json(JSON.parse(result));
 }
 
 const getAll = async (req, res) => {
-    const result = await global.contract.evaluateTransaction('GetAllAssets');
-
-    return res.json(JSON.parse(result));
+    try {
+        const result = await global.contract.evaluateTransaction('GetAllAssets');
+        return res.json(JSON.parse(result));
+    } catch(e) {
+        return res.json({ success: false, msg: 'Cannot get all assets.' });
+    }
 }
 
 const create = async (req, res) => {
-    const { ProductName, Owner, AppraisedValue } = req.body;
+    try {
+        const { ProductName, Owner, AppraisedValue } = req.body;
+        const ID = uuidv4();
+        const ProductLot = new Date().getTime().toString();
 
-    const ID = uuidv4();
-    const ProductLot = new Date().getTime().toString();
-    let result = await global.contract.submitTransaction('CreateAsset', ID, ProductName, ProductLot, Owner, AppraisedValue);
+        await global.contract.submitTransaction('CreateAsset', ID, ProductName, ProductLot, Owner, AppraisedValue);
+        const account = await Account.findOne({ gmail: Owner });
+        if(!account.assets.includes(ID)) {
+            account.assets.push(ID);
+        }
+        account.save();
 
-    result = await global.contract.evaluateTransaction('ReadAsset', ID);
-
-    return res.json(JSON.parse(result));
+        return res.json(JSON.parse(await global.contract.evaluateTransaction('ReadAsset', ID)));
+    } catch(e) {
+        return res.json({ success: false, msg: 'Cannot create asset.' });
+    }
 }
 
 
 const update = async (req, res) => {
-    const { ID, ProductName, Owner, AppraisedValue } = req.body;
+    try {
+        const { ID, ProductName, AppraisedValue } = req.body;
+        const { Owner, ProductLot } = JSON.parse(await global.contract.evaluateTransaction('ReadAsset', ID));
+        await global.contract.submitTransaction('UpdateAsset', ID, ProductName, ProductLot, Owner, AppraisedValue);
 
-    const exist = await global.contract.evaluateTransaction('AssetExists', ID);
-    if (exist.toString() === 'false') {
-        return res.json({ success: false, msg: 'asset do not exist' });
+        return res.json(JSON.parse(await global.contract.evaluateTransaction('ReadAsset', ID)));
+    } catch(e) {
+        return res.json({ success: false, msg: 'Cannot update asset.' });
     }
-
-    const { ProductLot } = JSON.parse(await global.contract.evaluateTransaction('ReadAsset', ID));
-
-    let result = await global.contract.submitTransaction('UpdateAsset', ID, ProductName, ProductLot, Owner, AppraisedValue);
-
-    result = await global.contract.evaluateTransaction('ReadAsset', ID);
-
-    return res.json(JSON.parse(result));
 }
 
 const trans = async (req, res) => {
-    const { ID, newOwner } = req.body;
+    try {
+        const { ID, newOwner } = req.body;
+        const { Owner: oldOwner } = JSON.parse(await global.contract.evaluateTransaction('ReadAsset', ID));
+        await contract.submitTransaction('TransferAsset', ID, newOwner);
+        
+        const newAccount = await Account.findOne({ gmail: newOwner });
+        if(!newAccount.assets.includes(ID)) {
+            newAccount.assets.push(ID);
+        }
+        newAccount.save();
 
-    const exist = await global.contract.evaluateTransaction('AssetExists', ID);
-    if (exist.toString() === 'false') {
-        return res.json({ success: false, msg: 'asset do not exist' });
+        const oldAccount = await Account.findOne({ gmail: oldOwner });
+        if(oldAccount.assets.includes(ID)) {
+            oldAccount.assets = oldAccount.assets.filter((assetID) => {
+                return assetID !== ID;
+            })
+        }
+        oldAccount.save();
+
+        return res.json(JSON.parse(await global.contract.evaluateTransaction('ReadAsset', ID)));
+    } catch(e) {
+        return res.json({ success: false, msg: 'Cannot transfer asset owner.' });
     }
-
-    let result = await contract.submitTransaction('TransferAsset', ID, newOwner);
-
-    result = await global.contract.evaluateTransaction('ReadAsset', ID);
-
-    return res.json(JSON.parse(result));
 }
 
 module.exports = { get, getAll, create, update, trans };

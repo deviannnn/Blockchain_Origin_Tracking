@@ -13,8 +13,8 @@ const indexRouter = require('./routes/index');
 
 const { Gateway, Wallets } = require('fabric-network');
 const FabricCAServices = require('fabric-ca-client');
-const { buildCAClient, registerAndEnrollUser, enrollAdmin } = require('../fabric-samples/test-application/javascript/CAUtil.js');
-const { buildCCPOrg1, buildWallet } = require('../fabric-samples/test-application/javascript/AppUtil.js');
+const { buildCAClient, registerAndEnrollUser, enrollAdmin } = require('./hyperledger-fabric/fabric-samples/test-application/javascript/CAUtil.js');
+const { buildCCPOrg1, buildWallet } = require('./hyperledger-fabric/fabric-samples/test-application/javascript/AppUtil.js');
 
 const channelName = process.env.CHANNEL_NAME || 'mychannel';
 const chaincodeName = process.env.CHAINCODE_NAME || 'basic';

@@ -3,7 +3,7 @@
 Need to get docker, wsl (windows), npm (10.2.3 recommended), node (20.10.0 recommended)
 
 ### HOW TO RUN?
-- Step 1: From project folder, run bash file in terminal
+- Step 1: From project 'hyperledger-fabric', run bash file in terminal
 ```
 ./install-fabric.sh
 ```
@@ -11,7 +11,7 @@ Need to get docker, wsl (windows), npm (10.2.3 recommended), node (20.10.0 recom
 ```
 cd fabric-samples/test-network
 ```
-- Step 3: Stop running containers/images to avoid conflicting
+- Step 3: Start docker, stop running containers/images to avoid conflicting by command
 ```
 ./network.sh down
 ```
@@ -21,9 +21,9 @@ cd fabric-samples/test-network
 ```
 - Step 5: Deploy the chaincode
 ```
-./network.sh deployCC -ccn basic -ccp ../../chaincode-custom/ -ccl javascript
+./network.sh deployCC -ccn basic -ccp ../../../chaincode-custom/ -ccl javascript
 ```
-- Step 6: Install all packages in file package.json
+- Step 6: Back to project directory, install all packages in file package.json
 ```
 npm install
 ```
