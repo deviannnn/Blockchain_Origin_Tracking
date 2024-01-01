@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Traceability</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spartan:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="login-container">
+        <div>
+            <div class="logo">
+                <i class="fas fa-sign-in-alt"></i>
+                <span onclick="window.location.href='/'">Product Traceability</span>
+            </div>
+            <div class="register">
+                <div>Safe, convenient and fast</div>
+
+            </div>
+        </div>
+
+        <div class="form-login">
+            <form class="form" id="form-2">
+                <h3 class="heading">Login</h3>
+                <div class="spacer"></div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input id="username" name="username" type="text" placeholder="Ex: email@gmail.com"
+                        class="form-control">
+                    <span class="form-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input id="password" name="password" type="password" placeholder="Enter password"
+                        class="form-control">
+                    <span class="form-message"></span>
+                </div>
+
+                <div class="sign-up">
+                    <div>
+                        <button class="form-submit" id="loginBtn">Sign in</button>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <a onclick="window.location.href='/register'">Register now!</a>
+                </div>
+            </form>
+            <div class="error-message" id="error-message"></div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $('#loginBtn').on('click', function (e) {
+            e.preventDefault();
+
+            const username = $('#username').val();
+            const password = $('#password').val();
+
+            // Kiểm tra nếu email trống
+            if (username.trim() === '') {
+                $('#error-message').text('Email cannot be empty');
+                return;
+            }
+
+            // Thêm điều kiện kiểm tra định dạng email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(username)) {
+                $('#error-message').text('Invalid email format');
+                return; // Ngừng thực hiện nếu định dạng email không hợp lệ
+            }
+
+            // Kiểm tra nếu mật khẩu trống
+            if (password.trim() === '') {
+                $('#error-message').text('Password cannot be empty');
+                return;
+            }
+
+            $.ajax({
+                url: '/account/login',
+                type: 'POST',
+                dataType: 'json',
+                data: { username, password },
+                success: function (response) {
+                    if (!response.success) {
+                        return $('#error-message').text('Incorrect email or password');
+                    }
+                    location.href = '/';
+                },
+                error: function (error) {
+                    $('#error-message').text('Server error. Please try again later.');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

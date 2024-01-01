@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Origin Tracking</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+</head>
+
+<body>
+    <div class="topnav">
+        <a class="active" onclick="window.location.href='/'">Home</a>
+        <a onclick="window.location.href='/handle?source=add'">Add product</a>
+        <a onclick="window.location.href='/purchase'">Purchase</a>
+        <a onclick="window.location.href='/inventory'">Inventory</a>
+    </div>
+
+    {{{body}}}
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    {{#if script}}
+    <script src="/javascripts/{{script}}.js"></script>
+    {{/if}}
+</body>
+
+</html>

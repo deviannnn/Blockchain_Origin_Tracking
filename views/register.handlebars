@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blur login</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spartan:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="overlay"></div>
+    <div class="login-container">
+        <div>
+            <div class="logo">
+                <i class="fas fa-user-plus"></i>
+                <span onclick="window.location.href='/'">Product Traceability</span>
+            </div>
+            <div class="register">
+                <div>Don't have an account? Register now!</div>
+
+            </div>
+        </div>
+
+        <div class="form-login">
+            <form action="" method="POST" class="form" id="form-2">
+                <h3 class="heading">Register</h3>
+                <div class="spacer"></div>
+
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input id="name" name="name" type="name" placeholder="Enter name" class="form-control">
+                    <span class="form-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Address</Address></label>
+                    <input id="address" name="address" type="address" placeholder="Enter address" class="form-control">
+                    <span class="form-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Who are you? </label>
+                    <label class="form-label"><br></label>
+                    <select id="role" name="role" class="form-control1">
+                        <option value="">Select your role</option>
+                        <option value="1">Farmer</option>
+                        <option value="2">Company</option>
+                    </select>
+                    <span class="form-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input id="email" name="email" type="text" placeholder="Ex: email@gmail.com" class="form-control">
+                    <span class="form-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input id="password" name="password" type="password" placeholder="Enter password"
+                        class="form-control">
+                    <span class="form-message"></span>
+                </div>
+
+
+                <div class="sign-up">
+                    <div>
+                        <button class="form-submit">Sign up</button>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <a onclick="window.location.href='/login'">Have an account?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

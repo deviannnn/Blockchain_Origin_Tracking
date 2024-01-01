@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const register = async (req, res) => {
     const { gmail, password, name, address, role } = req.body;
     const existAcc = await Account.findOne({ gmail });
-    if(existAcc) {
+    if (existAcc) {
         return res.status(200).json({ success: false, msg: 'Account\'s already existed.' });
     }
 
@@ -29,34 +29,30 @@ const register = async (req, res) => {
 }
 
 const login = async (req, res, next) => {
-    if(req.session.account) {
-        console.log("Logged in!!!")
-        return res.redirect('/');
-    }
     const { username, password } = req.body;
 
     try {
         const account = await Account.findOne({ gmail: username });
 
         if (!account || !bcrypt.compareSync(password, account.password)) {
-            return res.status(400).json({ success: false, msg: 'Invalid username or password.' });
+            return res.json({ success: false, msg: 'Invalid username or password.' });
         }
 
         req.session.account = account;
 
-        return res.status(200).json({ success: true });
+        return res.json({ success: true });
     } catch (error) {
-        return res.status(500).json({ success: false, msg: 'Internal Server Error.' });
+        return res.json({ success: false, msg: 'Internal Server Error.' });
     }
 }
 
 const logout = (req, res) => {
     req.session.destroy((err) => {
         if (err) {
-          console.error('Error destroying session:', err);
-          res.status(500).send('Internal Server Error.');
+            console.error('Error destroying session:', err);
+            res.status(500).send('Internal Server Error.');
         } else {
-          res.send('Session cleared successfully.');
+            res.send('Session cleared successfully.');
         }
     })
     return res.redirect('/');
@@ -64,7 +60,7 @@ const logout = (req, res) => {
 
 const get = async (req, res) => {
     const account = await Account.findOne({ gmail: req.params.username });
-    if(account) {
+    if (account) {
         return res.status(200).json({ success: true, msg: 'Get account successfully.', account });
     }
     return res.status(201).json({ success: true, msg: 'Account does not exist.', account });
@@ -89,7 +85,7 @@ const getAssetsByAccount = async (req, res) => {
         account.save();
 
         return res.status(200).json({ success: true, msg: `Get all assets by account successfully.`, assets });
-    } catch(e) {
+    } catch (e) {
         return res.status(500).json({ success: false, msg: 'Internal Server Error.' });
     }
 }
