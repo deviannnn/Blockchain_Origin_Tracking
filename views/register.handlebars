@@ -31,9 +31,9 @@
         </div>
 
         <div class="form-login">
-            <form action="" method="POST" class="form" id="form-2">
-                <h3 class="heading">Register</h3>
-                <div class="spacer"></div>
+            <form class="form" id="form-2">
+                <h3 class="heading" style="margin-bottom: 30px">Register</h3>
+                <div class="error-message" id="error-message"></div>
 
                 <div class="form-group">
                     <label class="form-label">Name</label>
@@ -52,8 +52,8 @@
                     <label class="form-label"><br></label>
                     <select id="role" name="role" class="form-control1">
                         <option value="">Select your role</option>
-                        <option value="1">Farmer</option>
-                        <option value="2">Company</option>
+                        <option value="farmer">Farmer</option>
+                        <option value="company">Company</option>
                     </select>
                     <span class="form-message"></span>
                 </div>
@@ -71,10 +71,9 @@
                     <span class="form-message"></span>
                 </div>
 
-
                 <div class="sign-up">
                     <div>
-                        <button class="form-submit">Sign up</button>
+                        <button class="form-submit" id="registBtn">Sign up</button>
                         <i class="fas fa-chevron-right"></i>
                     </div>
                     <a onclick="window.location.href='/login'">Have an account?</a>
@@ -82,6 +81,50 @@
             </form>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $('#registBtn').on('click', function (e) {
+            e.preventDefault();
+
+            const name = $('#name').val();
+            const address = $('#address').val();
+            const role = $('#role').val();
+            const gmail = $('#email').val();
+            const password = $('#password').val();
+
+            // Kiểm tra các trường thông tin
+            if (name.trim() === '' || address.trim() === '' || role === '' || gmail.trim() === '' || password.trim() === '') {
+                $('#error-message').text('Please fill in all fields');
+                return;
+            }
+
+            // Thêm điều kiện kiểm tra định dạng email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(gmail)) {
+                $('#error-message').text('Invalid email format');
+                return; // Ngừng thực hiện nếu định dạng email không hợp lệ
+            }
+
+            $.ajax({
+                url: '/account/register',
+                type: 'POST',
+                dataType: 'json',
+                data: { name, address, role, gmail, password },
+                success: function (response) {
+                    if (!response.success) {
+                        return $('#error-message').text(response.msg);
+                    }
+                    alert(response.msg);
+                    location.href = '/login';
+                },
+                error: function (error) {
+                    alert('Error! An error occurred. Please try again later.');
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>

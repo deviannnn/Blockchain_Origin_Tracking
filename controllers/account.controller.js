@@ -5,7 +5,7 @@ const register = async (req, res) => {
     const { gmail, password, name, address, role } = req.body;
     const existAcc = await Account.findOne({ gmail });
     if (existAcc) {
-        return res.status(200).json({ success: false, msg: 'Account\'s already existed.' });
+        return res.json({ success: false, msg: 'Gmail already existed.' });
     }
 
     try {
@@ -21,10 +21,10 @@ const register = async (req, res) => {
 
         await newAccount.save();
 
-        return res.status(201).json({ success: true, msg: 'Account registered successfully.', account: newAccount });
+        return res.json({ success: true, msg: 'Account registered successfully.', account: newAccount });
     } catch (error) {
         console.log(error.message)
-        return res.status(500).json({ success: false, msg: 'Internal Server Error.' });
+        return res.json({ success: false, msg: 'Internal Server Error.' });
     }
 }
 
@@ -90,4 +90,32 @@ const getAssetsByAccount = async (req, res) => {
     }
 }
 
-module.exports = { register, login, logout, get, getAssetsByAccount };
+const getAssetsByFarmer = async (req, res) => {
+    try {
+        const farmers = await Account.find({ role: 'farmer' });
+        let assets = [];
+
+        for (const farmer of farmers) {
+            const assetPromises = farmer.assets.map(async (assetID) => {
+                try {
+                    const asset = await global.contract.evaluateTransaction('ReadAsset', assetID);
+                    assets.push(JSON.parse(asset));
+                } catch (e) {
+                    console.log(`Asset with ID ${assetID} does not exist.`);
+                    farmer.assets = farmer.assets.filter((ID) => {
+                        return ID !== assetID;
+                    });
+                }
+            });
+
+            await Promise.all(assetPromises);
+            await farmer.save();
+        }
+
+        return res.status(200).json({ success: true, msg: `Get all assets by farmer successfully.`, assets });
+    } catch (e) {
+        return res.status(500).json({ success: false, msg: 'Internal Server Error.' });
+    }
+};
+
+module.exports = { register, login, logout, get, getAssetsByAccount, getAssetsByFarmer };

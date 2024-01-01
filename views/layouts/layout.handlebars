@@ -10,10 +10,15 @@
 
 <body>
     <div class="topnav">
-        <a class="active" onclick="window.location.href='/'">Home</a>
+        <a {{#if (eq active 'home' )}}class="active" {{/if}} onclick="window.location.href='/'">Home</a>
+        {{#if (eq role 'farmer')}}
         <a onclick="window.location.href='/handle?source=add'">Add product</a>
-        <a onclick="window.location.href='/purchase'">Purchase</a>
-        <a onclick="window.location.href='/inventory'">Inventory</a>
+        {{/if}}
+        {{#if (eq role 'company')}}
+        <a {{#if (eq active 'purchase' )}}class="active" {{/if}} onclick="window.location.href='/purchase'">Purchase</a>
+        {{/if}}
+        <a {{#if (eq active 'inventory' )}}class="active" {{/if}}
+            onclick="window.location.href='/inventory'">Inventory</a>
     </div>
 
     {{{body}}}

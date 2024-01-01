@@ -58,7 +58,7 @@ async function main() {
       });
 
       const network = await gateway.getNetwork(channelName);
-      
+
       global.contract = network.getContract(chaincodeName);
 
       await global.contract.submitTransaction('InitLedger');

@@ -28,13 +28,13 @@ const getAll = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const { ProductName, AppraisedValue } = req.body;
-        const Owner = req.session.account;
+        const { ProductName, Owner, AppraisedValue } = req.body;
+        // const Owner = req.session.account;
         const ID = uuidv4();
         const ProductLot = new Date().getTime().toString();
 
-        await global.contract.submitTransaction('CreateAsset', ID, ProductName, ProductLot, Owner.gmail, AppraisedValue);
-        const account = await Account.findOne({ gmail: Owner.gmail });
+        await global.contract.submitTransaction('CreateAsset', ID, ProductName, ProductLot, Owner, AppraisedValue);
+        const account = await Account.findOne({ gmail: Owner });
         if (!account.assets.includes(ID)) {
             account.assets.push(ID);
         }
@@ -42,6 +42,7 @@ const create = async (req, res) => {
 
         return res.json(JSON.parse(await global.contract.evaluateTransaction('ReadAsset', ID)));
     } catch (e) {
+        console.log(e);
         return res.json({ success: false, msg: 'Cannot create asset.' });
     }
 }
@@ -67,7 +68,9 @@ const update = async (req, res) => {
 
 const trans = async (req, res) => {
     try {
-        const { ID, newOwner } = req.body;
+        const { ID } = req.body;
+        const { gmail: newOwner } = req.session.account;
+
         // removable
         const exist = await global.contract.evaluateTransaction('AssetExists', ID);
         if (exist.toString() === 'false') {
@@ -91,7 +94,7 @@ const trans = async (req, res) => {
         }
         oldAccount.save();
 
-        return res.json(JSON.parse(await global.contract.evaluateTransaction('ReadAsset', ID)));
+        return res.json({ success: true, asset: JSON.parse(await global.contract.evaluateTransaction('ReadAsset', ID)) });
     } catch (e) {
         return res.json({ success: false, msg: 'Cannot transfer asset owner.' });
     }

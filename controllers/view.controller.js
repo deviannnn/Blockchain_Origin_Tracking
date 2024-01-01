@@ -8,7 +8,7 @@ const registerView = (req, res) => {
 }
 
 const homeView = (req, res) => {
-    res.render('home');
+    res.render('home', { active: 'home' });
 }
 
 const handleView = (req, res) => {
@@ -21,11 +21,11 @@ const handleView = (req, res) => {
 }
 
 const inventoryView = (req, res) => {
-    res.render('inventory');
+    res.render('inventory', { script: 'inventory', active: 'inventory' });
 }
 
 const purchaseView = (req, res) => {
-    res.render('purchase-asset');
+    res.render('purchase-asset', { script: 'purchase-asset', active: 'purchase' });
 }
 
 module.exports = { loginView, registerView, homeView, handleView, inventoryView, purchaseView };
