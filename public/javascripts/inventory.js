@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    console.log('isFarmer:', isFarmer())
     $('#loading').hide();
     loadLabel();
     $.ajax({
@@ -9,13 +10,20 @@ $(document).ready(function () {
             if (resp && resp.assets && resp.assets.length > 0) {
                 $('tbody').empty();
                 resp.assets.forEach(function (asset) {
-                    let row = `
+                    let row = isFarmer() ? `
                         <tr id=${asset.ID}>
                         <td>${asset.ID}</td>
                         <td>${asset.ProductLot}</td>
                         <td>${asset.ProductName}</td>
                         <td>${asset.AppraisedValue}</td>
                         <td><button onClick="clickEdit(event)" class="buy-button" data-asset='${JSON.stringify(asset)}'>Edit</button></td>
+                        </tr>
+                    ` : `
+                        <tr id=${asset.ID}>
+                        <td>${asset.ID}</td>
+                        <td>${asset.ProductLot}</td>
+                        <td>${asset.ProductName}</td>
+                        <td>${asset.AppraisedValue}</td>
                         </tr>
                     `
                     $('tbody').append(row);
@@ -130,6 +138,10 @@ function clickEdit(event) {
 
 function getUsername() {
     return JSON.parse($("#inv-username").text()).gmail;
+}
+
+function isFarmer() {
+    return $('#action-farmer').length === 1;
 }
 
 function loadLabel() {
