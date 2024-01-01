@@ -47,14 +47,7 @@ const login = async (req, res, next) => {
 }
 
 const logout = (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error('Error destroying session:', err);
-            res.status(500).send('Internal Server Error.');
-        } else {
-            res.send('Session cleared successfully.');
-        }
-    })
+    req.session.destroy();
     return res.redirect('/');
 };
 

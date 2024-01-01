@@ -8,7 +8,7 @@ const registerView = (req, res) => {
 }
 
 const homeView = (req, res) => {
-    res.render('home', { active: 'home' });
+    res.render('home', { active: 'home', role: req.session.account.role });
 }
 
 const handleView = (req, res) => {
@@ -21,7 +21,7 @@ const handleView = (req, res) => {
 }
 
 const inventoryView = (req, res) => {
-    res.render('inventory', { script: 'inventory', active: 'inventory' });
+    res.render('inventory', { isFarmer: req.session.account.role === 'farmer', script: 'inventory', active: 'inventory', username: JSON.stringify(req.session.account)});
 }
 
 const purchaseView = (req, res) => {

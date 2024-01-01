@@ -1,3 +1,67 @@
+{{#if isFarmer}}
+<style>
+    #loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .loading-spinner {
+        border: 8px solid #f3f3f3;
+        border-top: 8px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+<div id="loading">
+    <div class="loading-spinner"></div>
+</div>
+<div class="inv-container">
+    <span style="display: none;" id="inv-username">{{username}}</span>
+    <div class="inv-left">
+        <div class="user-info">
+            <form>
+                <h2 id="status"></h2>
+                <label for="productName">Name:</label>
+                <input type="text" id="productName" name="productName" placeholder="Product Name" required><br>
+
+                <label for="productPrice">Price:</label>
+                <input type="number" id="productPrice" name="productPrice" placeholder="Product Price" required><br>
+
+                <input type="submit" id="addEditBtn">
+            </form>
+        </div>
+    </div>
+    <div class="inv-right">
+        <table class="inv-product-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Lot</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+{{else}}
 <table class="product-table">
     <thead>
         <tr>
@@ -5,16 +69,10 @@
             <th>Lot</th>
             <th>Name</th>
             <th>Price</th>
-            <th></th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>1</td>
-            <td>5731253571</td>
-            <td>Product A</td>
-            <td>$19.99</td>
-            <td><button class="buy-button">Edit</button></td>
-        </tr>
     </tbody>
 </table>
+{{/if}}

@@ -1,6 +1,6 @@
 body {
     margin: 0px;
-    height: 100vh;
+    height: calc(100vh - 48px);
 }
 
 form {
@@ -130,6 +130,7 @@ input[type="submit"]:hover {
     text-decoration: none;
     font-size: 17px;
     transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
 }
 
 .topnav a:hover {
@@ -147,25 +148,6 @@ input[type="submit"]:hover {
     margin-top: 300px;
 }
 
-.product-table {
-    margin-top: 5%;
-    margin-left: 10%;
-    width: 80%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.product-table th,
-.product-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
-.product-table th {
-    background-color: #f2f2f2;
-}
-
 .buy-button {
     background-color: #ff0000;
     color: #fff;
@@ -181,16 +163,18 @@ input[type="submit"]:hover {
 
 .user-info {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
+    gap: 20px;
 }
 
 .user-info-container {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     max-width: 400px;
     width: 100%;
 }
@@ -212,4 +196,37 @@ span {
     border-radius: 4px;
     width: 100%;
     box-sizing: border-box;
+}
+
+.inv-container {
+    display: flex;
+    margin: 0 48px;
+    margin-top: 30px;
+    justify-content: space-between;
+}
+
+.inv-container .inv-left {
+    flex: 1;
+    margin-right: 24px;
+}
+
+.inv-container .inv-right {
+    flex: 3;
+    margin-left: 24px;
+}
+
+.inv-product-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.inv-product-table th,
+.inv-product-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.inv-product-table th {
+    background-color: #f2f2f2;
 }
