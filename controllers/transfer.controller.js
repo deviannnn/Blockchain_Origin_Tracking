@@ -4,7 +4,6 @@ const Account = require('../models/account');
 const get = async (req, res) => {
     try {
         const assetID = req.params.assetID;
-        
         // removable
         const exist = await global.contract.evaluateTransaction('AssetExists', assetID);
         if (exist.toString() === 'false') {
@@ -50,6 +49,12 @@ const create = async (req, res) => {
 const update = async (req, res) => {
     try {
         const { ID, ProductName, AppraisedValue } = req.body;
+        // removable
+        const exist = await global.contract.evaluateTransaction('AssetExists', ID);
+        if (exist.toString() === 'false') {
+            return res.json({ success: false, msg: 'Asset does not exist.' });
+        }
+        
         const { Owner, ProductLot } = JSON.parse(await global.contract.evaluateTransaction('ReadAsset', ID));
         await global.contract.submitTransaction('UpdateAsset', ID, ProductName, ProductLot, Owner, AppraisedValue);
 
@@ -62,6 +67,12 @@ const update = async (req, res) => {
 const trans = async (req, res) => {
     try {
         const { ID, newOwner } = req.body;
+        // removable
+        const exist = await global.contract.evaluateTransaction('AssetExists', ID);
+        if (exist.toString() === 'false') {
+            return res.json({ success: false, msg: 'Asset does not exist.' });
+        }
+
         const { Owner: oldOwner } = JSON.parse(await global.contract.evaluateTransaction('ReadAsset', ID));
         await contract.submitTransaction('TransferAsset', ID, newOwner);
         
