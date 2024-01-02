@@ -38,7 +38,6 @@ $(document).ready(function () {
     function reset() {
         $('#productName').val('');
         $('#productPrice').val('');
-        $('#status').text('Create');
         $('#addEditBtn').val('Create');
     }
 
@@ -46,7 +45,7 @@ $(document).ready(function () {
         e.preventDefault();
         let flag = validate();
 
-        if (flag && $('#status').text() === 'Create') {
+        if (flag && $('#addEditBtn').val() === 'Create') {
             $('#loading').show();
             $.ajax({
                 url: `/transfer/create`,
@@ -77,7 +76,7 @@ $(document).ready(function () {
                     $('#loading').hide();
                 }
             });
-        } else if (flag && $('#status').text() === 'Update') {
+        } else if (flag && $('#addEditBtn').val() === 'Update') {
             if($('#productName').val() === window.asset.ProductName && $('#productPrice').val() === window.asset.AppraisedValue) {
                 return reset();
             }
@@ -145,12 +144,10 @@ function isFarmer() {
 }
 
 function loadLabel() {
-    let status = $('#status').text();
+    let status = $('#addEditBtn').val();
     if (!status || status == 'add') {
-        $('#status').text('Create');
         $('#addEditBtn').val('Create');
     } else {
-        $('#status').text('Update');
         $('#addEditBtn').val('Update');
     }
 }
