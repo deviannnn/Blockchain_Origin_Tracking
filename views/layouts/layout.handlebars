@@ -8,7 +8,10 @@
     <link rel="stylesheet" type="text/css" href="css/common.css">
 </head>
 
-<body>
+<body>    
+    <div id="loading" style="display: none;">
+        <div class="loading-spinner"></div>
+    </div>
     <div class="topnav">
         <div>
             <a {{#if (eq active 'home' )}}class="active" {{/if}} onclick="window.location.href='/'">Home</a>

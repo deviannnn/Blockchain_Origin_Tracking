@@ -37,6 +37,7 @@ $(document).ready(function () {
     }
 
     function purchaseAsset(assetID) {
+        $('#loading').show();
         $.ajax({
             type: 'POST',
             url: '/transfer/trans',
@@ -48,9 +49,11 @@ $(document).ready(function () {
                 } else {
                     alert('Failed to purchase asset.');
                 }
+                $('#loading').hide();
             },
             error: function () {
                 alert('Error! An error occurred. Please try again later.');
+                $('#loading').hide();
             }
         });
     }

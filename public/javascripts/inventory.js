@@ -1,6 +1,6 @@
 $(document).ready(function () {
     console.log('isFarmer:', isFarmer())
-    $('#loading').hide();
+    // $('#loading').hide();
     loadLabel();
     $.ajax({
         url: `/account/getAssetsByAccount/${getUsername()}`,
@@ -57,18 +57,21 @@ $(document).ready(function () {
                     AppraisedValue: $('#productPrice').val()
                 },
                 success: function (resp) {
-                    let row = `
-                        <tr>
-                        <td>${resp.ID}</td>
-                        <td>${resp.ProductLot}</td>
-                        <td>${resp.ProductName}</td>
-                        <td>${resp.AppraisedValue}</td>
-                        <td><button onClick="clickEdit(event)" class="buy-button" data-asset='${JSON.stringify(resp)}'>Edit</button></td>
-                    `
-                    $('tbody').append(row);
-                    alert('Create asset successfully')
+                    if(!resp.success) {
+                        let row = `
+                            <tr>
+                            <td>${resp.ID}</td>
+                            <td>${resp.ProductLot}</td>
+                            <td>${resp.ProductName}</td>
+                            <td>${resp.AppraisedValue}</td>
+                            <td><button onClick="clickEdit(event)" class="buy-button" data-asset='${JSON.stringify(resp)}'>Edit</button></td>
+                        `
+                        $('tbody').append(row);
+                        alert('Create asset successfully')
+                    } else {
+                        alert('Error happened when creating asset')
+                    }
                     $('#loading').hide();
-
                 },
                 error: function (error) {
                     alert('Create asset failed')
@@ -91,15 +94,19 @@ $(document).ready(function () {
                     AppraisedValue: $('#productPrice').val()
                 },
                 success: function (resp) {
-                    let row = `
-                        <td>${resp.ID}</td>
-                        <td>${resp.ProductLot}</td>
-                        <td>${resp.ProductName}</td>
-                        <td>${resp.AppraisedValue}</td>
-                        <td><button onClick="clickEdit(event)" class="buy-button" data-asset='${JSON.stringify(resp)}'>Edit</button></td>
-                    `
-                    $(`#${window.asset.ID}`).html(row);
-                    alert('Update asset successfully');
+                    if(!resp.success) {
+                        let row = `
+                            <td>${resp.ID}</td>
+                            <td>${resp.ProductLot}</td>
+                            <td>${resp.ProductName}</td>
+                            <td>${resp.AppraisedValue}</td>
+                            <td><button onClick="clickEdit(event)" class="buy-button" data-asset='${JSON.stringify(resp)}'>Edit</button></td>
+                        `
+                        $(`#${window.asset.ID}`).html(row);
+                        alert('Update asset successfully');
+                    } else {
+                        alert('Error happened when updating asset')
+                    }
                     $('#loading').hide();
                 },
                 error: function (error) {
