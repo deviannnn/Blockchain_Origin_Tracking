@@ -30,7 +30,8 @@
     {{!-- main component --}}
     <div class="topnav">
         <div>
-            <a {{#if (eq active 'home' )}}class="active" {{/if}} onclick="window.location.href='/'">Home</a>
+            <a {{#if (eq active 'home' )}}class="active" {{/if}}
+                onclick="window.location.href='/'">Home</a>
             {{#if (eq role 'company')}}
             <a {{#if (eq active 'purchase' )}}class="active" {{/if}}
                 onclick="window.location.href='/purchase'">Purchase</a>

@@ -61,11 +61,11 @@ async function main() {
 
       global.contract = network.getContract(chaincodeName);
 
-      await global.contract.submitTransaction('InitLedger');
+      // await global.contract.submitTransaction('InitLedger');
       resolve();
     } catch (error) {
+      console.log(`******** FAILED to run the application: ${error}`);
       reject();
-      // console.log(`******** FAILED to run the application: ${error}`);
       // throw new Error();
     }
   })

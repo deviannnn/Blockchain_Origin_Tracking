@@ -3,19 +3,25 @@
 Need to get docker, wsl (windows), npm (10.2.3 recommended), node (20.10.0 recommended)
 
 ### HOW TO RUN?
-- Step 1: From folder 'hyperledger-fabric', run bash file in terminal
+- Step 0: Clone code in your Linux Environment
 ```
+git clone https://github.com/devilkun1/Blockchain_Origin_Tracking.git
+cd Blockchain_Origin_Tracking
+```
+- Step 1: Start docker. Then move to path 'hyperledger-fabric' and run bash file in terminal
+```
+cd hyperledger-fabric
 ./install-fabric.sh
 ```
-- Step 2: Move to path fabric-samples/test-network
+- Step 2: Continue move to path 'fabric-samples/test-network'
 ```
 cd fabric-samples/test-network
 ```
-- Step 3: Start docker, stop running containers/images to avoid conflicting by command
+- Step 3: Stop running containers/images to avoid conflicting by command
 ```
 ./network.sh down
 ```
-- Step 4: Creat channel with Certificate Authorities
+- Step 4: Create channel with Certificate Authorities
 ```
 ./network.sh up createChannel -c mychannel -ca
 ```
@@ -25,6 +31,7 @@ cd fabric-samples/test-network
 ```
 - Step 6: Back to project directory (Blockchain_Origin_Tracking), install all packages in file package.json
 ```
+cd ~/Blockchain_Origin_Tracking
 npm install
 ```
 - Step 7: Start the web project

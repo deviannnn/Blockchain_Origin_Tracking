@@ -37,11 +37,13 @@ $(document).ready(function () {
     }
 
     function purchaseAsset(assetID) {
-        $('#loading').show();
         $.ajax({
             type: 'POST',
             url: '/transfer/trans',
             data: { ID: assetID },
+            beforeSend: function () {
+                $('#loading').show();
+            },
             success: function (data) {
                 if (data.success) {
                     alert('Asset purchased successfully.');
@@ -49,10 +51,11 @@ $(document).ready(function () {
                 } else {
                     alert('Failed to purchase asset.');
                 }
-                $('#loading').hide();
             },
             error: function () {
                 alert('Error! An error occurred. Please try again later.');
+            },
+            complete: function () {
                 $('#loading').hide();
             }
         });

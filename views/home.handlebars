@@ -1,26 +1,26 @@
 <div class="user-info">
     <div style="background-color: #04AA6D;border-radius: 12px;padding: 0 16px;color: white;">
-        <h1 style="text-transform: uppercase;font-weight: bold;font-size: 20px;">{{role}}</h1>
+        <h1 style="text-transform: uppercase;font-weight: bold;font-size: 20px;">{{account.role}}</h1>
     </div>
     <div class="user-info-container">
         <div class="user-info-item">
             <label for="name">Name:</label>
-            <span id="name">John Doe</span>
+            <span id="name">{{account.name}}</span>
         </div>
 
         <div class="user-info-item">
             <label for="address">Address:</label>
-            <span id="address">123 Main St, City</span>
+            <span id="address">{{account.address}}</span>
         </div>
 
         <div class="user-info-item">
             <label for="role">Role:</label>
-            <span id="role">Developer</span>
+            <span id="role">{{account.role}}</span>
         </div>
 
         <div class="user-info-item">
             <label for="email">Email:</label>
-            <span id="email">john.doe@example.com</span>
+            <span id="email">{{account.gmail}}</span>
         </div>
     </div>
 </div>

@@ -46,7 +46,6 @@ $(document).ready(function () {
         let flag = validate();
 
         if (flag && $('#addEditBtn').val() === 'Create') {
-            $('#loading').show();
             $.ajax({
                 url: `/transfer/create`,
                 type: 'POST',
@@ -56,8 +55,11 @@ $(document).ready(function () {
                     Owner: getUsername(),
                     AppraisedValue: $('#productPrice').val()
                 },
+                beforeSend: function () {
+                    $('#loading').show();
+                },
                 success: function (resp) {
-                    if(!resp.success) {
+                    if (!resp.success) {
                         let row = `
                             <tr>
                             <td>${resp.ID}</td>
@@ -71,19 +73,20 @@ $(document).ready(function () {
                     } else {
                         alert('Error happened when creating asset')
                     }
-                    $('#loading').hide();
                 },
                 error: function (error) {
-                    alert('Create asset failed')
+                    alert('Error! An error occurred. Please try again later.');
                     console.log('Create asset failed:', error);
+                },
+                complete: function () {
                     $('#loading').hide();
                 }
             });
         } else if (flag && $('#addEditBtn').val() === 'Update') {
-            if($('#productName').val() === window.asset.ProductName && $('#productPrice').val() === window.asset.AppraisedValue) {
+            if ($('#productName').val() === window.asset.ProductName && $('#productPrice').val() === window.asset.AppraisedValue) {
                 return reset();
             }
-            $('#loading').show();
+
             $.ajax({
                 url: `/transfer/update`,
                 type: 'PUT',
@@ -93,8 +96,11 @@ $(document).ready(function () {
                     ProductName: $('#productName').val(),
                     AppraisedValue: $('#productPrice').val()
                 },
+                beforeSend: function () {
+                    $('#loading').show();
+                },
                 success: function (resp) {
-                    if(!resp.success) {
+                    if (!resp.success) {
                         let row = `
                             <td>${resp.ID}</td>
                             <td>${resp.ProductLot}</td>
@@ -104,14 +110,16 @@ $(document).ready(function () {
                         `
                         $(`#${window.asset.ID}`).html(row);
                         alert('Update asset successfully');
+                        window.location.reload();
                     } else {
                         alert('Error happened when updating asset')
                     }
-                    $('#loading').hide();
                 },
                 error: function (error) {
                     alert('Update asset failed');
                     console.log('Update asset failed:', error);
+                },
+                complete: function () {
                     $('#loading').hide();
                 }
             });
@@ -124,10 +132,10 @@ function validate() {
     let name = $('#productName').val();
     let price = $('#productPrice').val();
 
-    if(!name || name.trim().length === 0) {
+    if (!name || name.trim().length === 0) {
         alert('Please enter product name');
         return false;
-    } else if(!price || price.trim().length === 0) {
+    } else if (!price || price.trim().length === 0) {
         alert('Please enter product price');
         return false;
     } else {
