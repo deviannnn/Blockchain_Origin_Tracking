@@ -80,6 +80,7 @@ $(document).ready(function () {
                 },
                 complete: function () {
                     $('#loading').hide();
+                    reset();
                 }
             });
         } else if (flag && $('#addEditBtn').val() === 'Update') {
@@ -121,10 +122,10 @@ $(document).ready(function () {
                 },
                 complete: function () {
                     $('#loading').hide();
+                    reset();
                 }
             });
         }
-        reset();
     })
 })
 
