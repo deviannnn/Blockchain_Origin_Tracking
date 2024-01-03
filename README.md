@@ -1,6 +1,6 @@
 # Blockchain_Origin_Tracking
 
-Need to get docker, wsl (windows), npm (10.2.3 recommended), node (20.10.0 recommended)
+Need to get docker (latest version recommended), wsl2 (windows), npm (10.2.3 recommended), node (20.10.0 recommended)
 
 ### HOW TO RUN?
 - Step 0: Clone code in your Linux Environment
