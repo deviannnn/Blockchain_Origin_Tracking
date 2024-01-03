@@ -11,7 +11,7 @@ cd Blockchain_Origin_Tracking
 - Step 1: Start docker. Then move to path 'hyperledger-fabric' and run bash file in terminal
 ```
 cd hyperledger-fabric
-./install-fabric.sh
+./install-fabric.sh -f '2.5.4' -c '1.5.7' d s b
 ```
 - Step 2: Continue move to path 'fabric-samples/test-network'
 ```
