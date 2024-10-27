@@ -1,0 +1,2 @@
+link github: https://github.com/devilkun1/Blockchain_Origin_Tracking.git
+link video kết quả thực hiện & quá trình thực hiện: https://drive.google.com/drive/folders/1Z_U0e6zWd3t8VRl6fgPIau4G63mUOdq9?usp=sharing
